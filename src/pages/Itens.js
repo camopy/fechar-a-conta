@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {List} from 'material-ui/List';
 import Item from '../components/Item';
+import ItemStore from '../stores/ItemStore';
 
 class Itens extends Component {
+  constructor() {
+    super();
+    this.state = {
+      itens: ItemStore.getAll()
+    }
+  }
   render() {
-    var itens = [
-      {id: "1", nome: "Cerveja", valorUnitario: 6, quantidade: 6},
-      {id: "2", nome: "Catuaba", valorUnitario: 12, quantidade: 2},
-      {id: "3", nome: "Vodka", valorUnitario: 22, quantidade: 1},
-    ]
+    const { itens } = this.state;
 
     const ItemComponents = itens.map((item) => {
         return <Item key={item.id} {...item}/>;
