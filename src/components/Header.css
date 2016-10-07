@@ -1,0 +1,9 @@
+.buttonClear {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.Header {
+    position: relative;
+}
