@@ -18,7 +18,7 @@ class Itens extends Component {
   }
 
   componentWillUnmount() {
-    ItemStore.removeListener("change", this.getPessoas);
+    ItemStore.removeListener("change", this.getItens);
   }
 
   getItens() {

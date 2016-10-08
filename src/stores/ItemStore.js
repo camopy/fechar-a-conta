@@ -30,7 +30,4 @@ class ItemStore extends EventEmitter {
 
 const itemStore = new ItemStore();
 
-//@todo remover
-window.itemStore = itemStore;
-
 export default itemStore;

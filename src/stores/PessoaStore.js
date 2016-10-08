@@ -5,16 +5,6 @@ import dispatcher from "../dispatcher";
 class PessoaStore extends EventEmitter {
   constructor() {
     super()
-    // this.pessoas = [
-    //   {id: "1", nome: "Paulo", valorPago: 0},
-    //   {id: "2", nome: "Fran", valorPago: 0},
-    //   {id: "3", nome: "Stones", valorPago: 0},
-    //   {id: "4", nome: "Diego", valorPago: 0},
-    //   {id: "5", nome: "Ligia", valorPago: 0},
-    //   {id: "6", nome: "Foca", valorPago: 0},
-    //   {id: "7", nome: "Carlotta", valorPago: 0},
-    //   {id: "8", nome: "Maíra", valorPago: 0}
-    // ]
     this.pessoas = this.getPessoas();
   }
 
@@ -36,7 +26,6 @@ class PessoaStore extends EventEmitter {
     });
 
     this.setPessoas(this.pessoas);
-
     this.emit("change");
   }
 
@@ -45,6 +34,7 @@ class PessoaStore extends EventEmitter {
         return pessoa.id !== id;
     });
     this.setPessoas(this.pessoas);
+    this.emit("change");
   }
 
   getAll() {
@@ -54,6 +44,7 @@ class PessoaStore extends EventEmitter {
   clearAllData() {
     this.pessoas = [];
     this.setPessoas(this.pessoas);
+    this.emit("change");
   }
 
   handleActions(action){
@@ -64,12 +55,10 @@ class PessoaStore extends EventEmitter {
       }
       case "DELETE_PESSOA": {
         this.deletePessoa(action.id)
-        this.emit("change");
         break;
       }
       case "CLEAR_DATA": {
         this.clearAllData();
-        this.emit("change");
         break;
       }
       default:
@@ -80,9 +69,5 @@ class PessoaStore extends EventEmitter {
 
 const pessoaStore = new PessoaStore();
 dispatcher.register(pessoaStore.handleActions.bind(pessoaStore));
-
-//@todo remover
-window.pessoaStore = pessoaStore;
-window.dispatcher = dispatcher;
 
 export default pessoaStore;
