@@ -10,11 +10,27 @@ class ItemStore extends EventEmitter {
     ]
   }
 
+  createItem(nome, valorUnitario, quantidade) {
+    const id = Date.now();
+
+    this.itens.push({
+      id, 
+      nome,
+      valorUnitario,
+      quantidade  
+    })
+
+    this.emit("change");
+  }
+
   getAll() {
     return this.itens;
   }
 }
 
 const itemStore = new ItemStore();
+
+//@todo remover
+window.itemStore = itemStore;
 
 export default itemStore;

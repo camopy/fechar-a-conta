@@ -7,10 +7,26 @@ import ItemStore from '../stores/ItemStore';
 class Itens extends Component {
   constructor() {
     super();
+    this.getItens = this.getItens.bind(this);
     this.state = {
       itens: ItemStore.getAll()
     }
   }
+
+  componentWillMount() {
+    ItemStore.on("change", this.getItens);
+  }
+
+  componentWillUnmount() {
+    ItemStore.removeListener("change", this.getPessoas);
+  }
+
+  getItens() {
+    this.setState({
+      itens: ItemStore.getAll()
+    })
+  }
+
   render() {
     const { itens } = this.state;
 
