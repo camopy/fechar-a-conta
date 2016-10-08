@@ -31,7 +31,7 @@ class Footer extends Component {
           <Paper zDepth={1}>
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
               <BottomNavigationItem
-                label="pessoas"
+                label="Pessoas"
                 icon={recentsIcon}
                 onTouchTap={() => this.navigate.bind(this)(0, "/pessoas")}
               />
