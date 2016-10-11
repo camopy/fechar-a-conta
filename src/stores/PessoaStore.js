@@ -52,8 +52,7 @@ class PessoaStore extends EventEmitter {
     this.pessoas.push({
       id,
       nome,
-      valorPago: 0,
-      itens: []
+      valorPago: 0
     });
 
     this.setPessoas(this.pessoas);

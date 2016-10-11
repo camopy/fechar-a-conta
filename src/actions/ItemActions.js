@@ -14,6 +14,15 @@ export function deleteItem(id) {
   });
 }
 
+export function updatePessoaItem(pessoa, checked, itemId) {
+  dispatcher.dispatch({
+    type: "UPDATE_PESSOA_ITEM",
+    pessoa,
+    checked,
+    itemId
+  });
+}
+
 export function updateQuantidade(id, quantidade) {
   dispatcher.dispatch({
     type: "UPDATE_QUANTIDADE",

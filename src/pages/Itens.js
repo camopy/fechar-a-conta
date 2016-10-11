@@ -4,7 +4,6 @@ import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Item from '../components/Item';
 import ItemStore from '../stores/ItemStore';
-import PessoaStore from '../stores/PessoaStore';
 import * as ItemActions from "../actions/ItemActions";
 
 class Itens extends Component {
@@ -12,7 +11,7 @@ class Itens extends Component {
     super();
     this.getItens = this.getItens.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleAddItem = this.handleAddItem.bind(this);
     this.state = {
       itens: ItemStore.getAll(),
       nome: ''
@@ -21,12 +20,12 @@ class Itens extends Component {
 
   componentWillMount() {
     ItemStore.on("change", this.getItens);
-    PessoaStore.on("changePessoaItem", this.getItens);
+    ItemStore.on("changePessoasItem", this.getItens);
   }
 
   componentWillUnmount() {
     ItemStore.removeListener("change", this.getItens);
-    PessoaStore.removeListener("changePessoaItem", this.getItens);
+    ItemStore.removeListener("changePessoasItem", this.getItens);
   }
 
   getItens() {
@@ -39,7 +38,7 @@ class Itens extends Component {
     ItemActions.createItem(nome);
   }
 
-  handleChange(event) {
+  handleAddItem(event) {
     this.setState({
       nome: event.target.value,
     });
@@ -77,7 +76,7 @@ class Itens extends Component {
                   floatingLabelText="Adicionar item"
                   fullWidth={true}
                   value={this.state.nome}
-                  onChange={this.handleChange}
+                  onChange={this.handleAddItem}
                 />
               </div>
             </MuiThemeProvider>

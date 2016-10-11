@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
-// import {ListItem} from 'material-ui/List';
-// import Paper from 'material-ui/Paper';
-import * as PessoaActions from "../actions/PessoaActions";
+import * as ItemActions from "../actions/ItemActions";
 
 class PessoaItem extends Component {
   constructor(){
@@ -11,7 +9,7 @@ class PessoaItem extends Component {
   }
 
   handleCheck(){
-    PessoaActions.updateItemPessoa(this.props.pessoa, this.props.checked, this.props.itemId)
+    ItemActions.updatePessoaItem(this.props.pessoa, this.props.checked, this.props.itemId)
   }
   
   render() {

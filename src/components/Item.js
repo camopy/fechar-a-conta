@@ -11,20 +11,13 @@ class Item extends Component {
     super();
     this.handleDelete = this.handleDelete.bind(this);
     this.handleQuantidade = this.handleQuantidade.bind(this);
-    this.handleValorUnitario = this.handleValorUnitario.bind(this);
-    this.getPessoas = this.getPessoas.bind(this);    
+    this.handleValorUnitario = this.handleValorUnitario.bind(this);    
     this.state = {
-      pessoas: PessoaStore.getAll(),
+      allPessoas: PessoaStore.getAll(),
       quantidade: props.quantidade,
       valorUnitario: props.valorUnitario
     }
   }  
-
-  getPessoas() {
-    this.setState({
-      pessoas: PessoaStore.getAll()
-    })
-  }
 
   handleDelete(){
     ItemActions.deleteItem(this.props.id)
@@ -45,7 +38,7 @@ class Item extends Component {
   };
 
   render() {
-    const { id, nome, valorUnitario, quantidade } = this.props;
+    const { id, nome, valorUnitario, quantidade, pessoas } = this.props;
     const style = {
       width: '97%',
       margin: 5,
@@ -53,17 +46,14 @@ class Item extends Component {
 
     var stValorTotal = "Total: R$" + (quantidade*valorUnitario || 0);
 
-    const { pessoas } = this.state;    
-    const PessoasItemComponent = pessoas.map((pessoa) => {
-      const item = pessoa.itens.find(function(item){
-        return item === id
-      })
-      return <PessoaItem 
-        key={pessoa.id} 
-        pessoa={pessoa}
-        checked={!!item}
-        itemId={id}
-      />;
+    const { allPessoas } = this.state;    
+    const PessoasItemComponent = allPessoas.map((pessoa) => {
+        return <PessoaItem
+          key={pessoa.id} 
+          pessoa={pessoa}
+          checked={pessoas.indexOf(pessoa.id) >= 0 ? true : false}
+          itemId={id}
+        />;
     });
 
     return (

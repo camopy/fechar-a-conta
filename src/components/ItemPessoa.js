@@ -10,10 +10,6 @@ class ItemPessoa extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }  
 
-  // createItem(nome) {
-  //   ItemActions.createPessoa(nome);
-  // }
-
   handleDelete(){
     ItemActions.deleteItem(this.props.id)
   }

@@ -11,17 +11,10 @@ class Pessoa extends Component {
     super();
     this.handleDelete = this.handleDelete.bind(this);
     this.handleValorPago = this.handleValorPago.bind(this);
-    this.getItens = this.getItens.bind(this);
     this.state = {
       allItens: ItemStore.getAll(),
       valorPago: props.valorPago
     }
-  }
-
-  getItens() {
-    this.setState({
-      allItens: ItemStore.getAll()
-    })
   }
 
   handleDelete(){
@@ -35,27 +28,35 @@ class Pessoa extends Component {
     PessoaActions.updateValorPago(this.props.id, event.target.value || 0);
   };
 
-  calcularValorTotal(){
-    // console.log(this);
-    return 14;
+  calcularValorTotal(id, allItens){
+    var valorTotal = 0;
+
+    const itensPessoa = allItens.filter(function(item){
+      return item.pessoas.indexOf(id) >= 0;
+    });
+
+    itensPessoa.forEach(function(item){
+      valorTotal += (item.quantidade*item.valorUnitario)/item.pessoas.length;
+    });
+    return valorTotal;
   }
   
   render() {
-    const { nome, valorPago, itens } = this.props;
+    const { id, nome, valorPago } = this.props;
     const style = {
       width: '97%',
       margin: 5,
     };
-
-    var valorTotal = this.calcularValorTotal();
-    var valorPagar = valorTotal - valorPago
-
     const { allItens } = this.state;
     const ItemPessoaComponents = allItens.map((item) => {
-      if(itens.indexOf(item.id)>=0)
+      if(item.pessoas.indexOf(id)>=0)
         return <ItemPessoa key={item.id} {...item}/>;
       return false;
     });
+
+    var valorTotal = this.calcularValorTotal(id, allItens);
+    var valorPagar = valorTotal - valorPago
+
 
     return (
       <MuiThemeProvider>

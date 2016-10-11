@@ -36,6 +36,26 @@ class ItemStore extends EventEmitter {
     this.emit("change");
   }
 
+  updatePessoaItem(objPessoa, checked, itemId){
+    var itemEditar = this.itens.find(function(item){
+      return item.id === itemId
+    });
+    const index = this.itens.indexOf(itemEditar);
+    if(!checked){
+      itemEditar.pessoas.push(objPessoa.id);
+      this.itens[index] = itemEditar;
+      this.setItens(this.itens); 
+    }
+    else{
+      itemEditar.pessoas = itemEditar.pessoas.filter(function(pessoa){
+        return pessoa !== objPessoa.id
+      })
+      this.itens[index] = itemEditar;
+      this.setItens(this.itens);
+    }
+    this.emit("changePessoasItem");
+  }
+
   createItem(nome, valorUnitario, quantidade) {
     const id = Date.now();
 
@@ -43,7 +63,8 @@ class ItemStore extends EventEmitter {
       id, 
       nome,
       valorUnitario: 0,
-      quantidade: 0
+      quantidade: 0,
+      pessoas: []
     })
 
     this.setItens(this.itens);
@@ -76,6 +97,10 @@ class ItemStore extends EventEmitter {
       }
       case "DELETE_ITEM": {
         this.deleteItem(action.id)
+        break;
+      }
+      case "UPDATE_PESSOA_ITEM": {
+        this.updatePessoaItem(action.pessoa, action.checked, action.itemId)
         break;
       }
       case "UPDATE_QUANTIDADE": {
