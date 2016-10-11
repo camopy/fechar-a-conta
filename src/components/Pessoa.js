@@ -12,13 +12,13 @@ class Pessoa extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.getItens = this.getItens.bind(this);    
     this.state = {
-      itens: ItemStore.getAll(),
+      allItens: ItemStore.getAll(),
     }
   }
 
   getItens() {
     this.setState({
-      itens: ItemStore.getAll()
+      allItens: ItemStore.getAll()
     })
   }
 
@@ -27,7 +27,7 @@ class Pessoa extends Component {
   }
   
   render() {
-    const { nome, valorPago } = this.props;
+    const { nome, valorPago, itens } = this.props;
     const style = {
       width: '97%',
       margin: 5,
@@ -36,9 +36,11 @@ class Pessoa extends Component {
     var valorTotal = 14
     var valorPagar = valorTotal - valorPago
 
-    const { itens } = this.state;
-    const ItemPessoaComponents = itens.map((item) => {
+    const { allItens } = this.state;
+    const ItemPessoaComponents = allItens.map((item) => {
+      if(itens.indexOf(item.id)>=0)
         return <ItemPessoa key={item.id} {...item}/>;
+      return false;
     });
 
     return (
@@ -51,7 +53,7 @@ class Pessoa extends Component {
             showExpandableButton={true}
           />
           <CardText expandable={true}>
-          <TextField
+            <TextField
               floatingLabelText="Valor pago"
               fullWidth={true}
               // value={this.state.nome}

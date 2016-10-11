@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-// import {ListItem} from 'material-ui/List';
-// import FontIcon from 'material-ui/FontIcon';
-// import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
 import PessoaStore from '../stores/PessoaStore';
 import PessoaItem from "./PessoaItem";
 import * as ItemActions from "../actions/ItemActions";
@@ -39,7 +37,7 @@ class Item extends Component {
       margin: 5,
     };
 
-    var stValorTotal = "Valor Total: R$" + (quantidade*valorUnitario || 0);
+    var stValorTotal = "Total: R$" + (quantidade*valorUnitario || 0);
 
     const { pessoas } = this.state;    
     const PessoasItemComponent = pessoas.map((pessoa) => {
@@ -64,6 +62,18 @@ class Item extends Component {
             showExpandableButton={true}
           />
           <CardText expandable={true}>
+            <TextField
+              floatingLabelText="Quantidade"
+              // fullWidth={true}
+              // value={this.state.nome}
+              // onChange={this.handleChange}
+            />
+            <TextField
+              floatingLabelText="Valor"
+              // fullWidth={true}
+              // value={this.state.nome}
+              // onChange={this.handleChange}
+            />
             {PessoasItemComponent}
           </CardText>
         </Card>
