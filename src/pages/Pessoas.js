@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Pessoa from '../components/Pessoa';
 import PessoaStore from '../stores/PessoaStore';
@@ -19,12 +18,10 @@ class Pessoas extends Component {
   }
 
   componentWillMount() {
-    console.log('mount');
     PessoaStore.on("change", this.getPessoas);
   }
 
   componentWillUnmount() {
-    console.log('unmount');
     PessoaStore.removeListener("change", this.getPessoas);
   }
 
@@ -98,12 +95,8 @@ class Pessoas extends Component {
             </MuiThemeProvider>
           </form>
         </div>
-        <div style={pessoasStyle}>
-          <MuiThemeProvider>                  
-            <List>            
-              {PessoaComponents}
-            </List>       
-          </MuiThemeProvider>   
+        <div style={pessoasStyle}>                  
+          {PessoaComponents}
         </div>
       </div>
     );

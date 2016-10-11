@@ -5,16 +5,6 @@ import dispatcher from "../dispatcher";
 class PessoaStore extends EventEmitter {
   constructor() {
     super()
-    // this.pessoas = [
-    //   {id: "1", nome: "Paulo", valorPago: 0},
-    //   {id: "2", nome: "Fran", valorPago: 0},
-    //   {id: "3", nome: "Stones", valorPago: 0},
-    //   {id: "4", nome: "Diego", valorPago: 0},
-    //   {id: "5", nome: "Ligia", valorPago: 0},
-    //   {id: "6", nome: "Foca", valorPago: 0},
-    //   {id: "7", nome: "Carlotta", valorPago: 0},
-    //   {id: "8", nome: "Maíra", valorPago: 0}
-    // ]
     this.pessoas = this.getPessoas();
   }
 
@@ -24,6 +14,36 @@ class PessoaStore extends EventEmitter {
 
   setPessoas(pessoas) {
     localStorage.setItem("pessoas", JSON.stringify(pessoas));
+  }
+
+  updateValorPago(id, valorPago){
+    var pessoaEditar = this.pessoas.find(function(pessoa){
+      return pessoa.id === id
+    });
+    const index = this.pessoas.indexOf(pessoaEditar);
+    this.pessoas[index].valorPago = valorPago;
+    this.setPessoas(this.pessoas);
+    this.emit("change");
+  }
+
+  updateItemPessoa(objPessoa, checked, itemId){
+    var pessoaEditar = this.pessoas.find(function(pessoa){
+      return pessoa.id === objPessoa.id
+    });
+    const index = this.pessoas.indexOf(pessoaEditar);
+    if(!checked){
+      pessoaEditar.itens.push(itemId);
+      this.pessoas[index] = pessoaEditar;
+      this.setPessoas(this.pessoas); 
+    }
+    else{
+      pessoaEditar.itens = pessoaEditar.itens.filter(function(item){
+        return item !== itemId
+      })
+      this.pessoas[index] = pessoaEditar;
+      this.setPessoas(this.pessoas);
+    }
+    this.emit("changePessoaItem");
   }
 
   createPessoa(nome) {
@@ -36,7 +56,6 @@ class PessoaStore extends EventEmitter {
     });
 
     this.setPessoas(this.pessoas);
-
     this.emit("change");
   }
 
@@ -45,6 +64,7 @@ class PessoaStore extends EventEmitter {
         return pessoa.id !== id;
     });
     this.setPessoas(this.pessoas);
+    this.emit("change");
   }
 
   getAll() {
@@ -54,6 +74,7 @@ class PessoaStore extends EventEmitter {
   clearAllData() {
     this.pessoas = [];
     this.setPessoas(this.pessoas);
+    this.emit("change");
   }
 
   handleActions(action){
@@ -64,12 +85,18 @@ class PessoaStore extends EventEmitter {
       }
       case "DELETE_PESSOA": {
         this.deletePessoa(action.id)
-        this.emit("change");
+        break;
+      }
+      case "UPDATE_ITEM_PESSOA": {
+        this.updateItemPessoa(action.pessoa, action.checked, action.itemId)
+        break;
+      }
+      case "UPDATE_VALOR_PAGO": {
+        this.updateValorPago(action.id, action.valorPago)
         break;
       }
       case "CLEAR_DATA": {
         this.clearAllData();
-        this.emit("change");
         break;
       }
       default:
@@ -80,9 +107,5 @@ class PessoaStore extends EventEmitter {
 
 const pessoaStore = new PessoaStore();
 dispatcher.register(pessoaStore.handleActions.bind(pessoaStore));
-
-//@todo remover
-window.pessoaStore = pessoaStore;
-window.dispatcher = dispatcher;
 
 export default pessoaStore;
