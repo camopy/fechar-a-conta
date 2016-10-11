@@ -16,14 +16,34 @@ class ItemStore extends EventEmitter {
     localStorage.setItem("itens", JSON.stringify(itens));
   }
 
+  updateQuantidade(id, quantidade){
+    var itemEditar = this.itens.find(function(item){
+      return item.id === id
+    });
+    const index = this.itens.indexOf(itemEditar);
+    this.itens[index].quantidade = quantidade;
+    this.setItens(this.itens);
+    this.emit("change");
+  }
+
+  updateValorUnitario(id, valorUnitario){
+    var itemEditar = this.itens.find(function(item){
+      return item.id === id
+    });
+    const index = this.itens.indexOf(itemEditar);
+    this.itens[index].valorUnitario = valorUnitario;
+    this.setItens(this.itens);
+    this.emit("change");
+  }
+
   createItem(nome, valorUnitario, quantidade) {
     const id = Date.now();
 
     this.itens.push({
       id, 
       nome,
-      // valorUnitario,
-      // quantidade  
+      valorUnitario: 0,
+      quantidade: 0
     })
 
     this.setItens(this.itens);
@@ -56,6 +76,14 @@ class ItemStore extends EventEmitter {
       }
       case "DELETE_ITEM": {
         this.deleteItem(action.id)
+        break;
+      }
+      case "UPDATE_QUANTIDADE": {
+        this.updateQuantidade(action.id, action.quantidade)
+        break;
+      }
+      case "UPDATE_VALOR_UNITARIO": {
+        this.updateValorUnitario(action.id, action.valorUnitario)
         break;
       }
       case "CLEAR_DATA": {

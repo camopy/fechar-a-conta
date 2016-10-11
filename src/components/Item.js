@@ -7,12 +7,16 @@ import PessoaItem from "./PessoaItem";
 import * as ItemActions from "../actions/ItemActions";
 
 class Item extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleQuantidade = this.handleQuantidade.bind(this);
+    this.handleValorUnitario = this.handleValorUnitario.bind(this);
     this.getPessoas = this.getPessoas.bind(this);    
     this.state = {
       pessoas: PessoaStore.getAll(),
+      quantidade: props.quantidade,
+      valorUnitario: props.valorUnitario
     }
   }  
 
@@ -22,13 +26,23 @@ class Item extends Component {
     })
   }
 
-  // createItem(nome) {
-  //   ItemActions.createPessoa(nome);
-  // }
-
   handleDelete(){
     ItemActions.deleteItem(this.props.id)
   }
+
+  handleQuantidade(event) {
+    this.setState({
+      quantidade: event.target.value,
+    });
+    ItemActions.updateQuantidade(this.props.id, event.target.value || 0);
+  };
+
+  handleValorUnitario(event) {
+    this.setState({
+      valorUnitario: event.target.value,
+    });
+    ItemActions.updateValorUnitario(this.props.id, event.target.value || 0);
+  };
 
   render() {
     const { id, nome, valorUnitario, quantidade } = this.props;
@@ -64,15 +78,15 @@ class Item extends Component {
           <CardText expandable={true}>
             <TextField
               floatingLabelText="Quantidade"
-              // fullWidth={true}
-              // value={this.state.nome}
-              // onChange={this.handleChange}
+              fullWidth={true}
+              value={this.state.quantidade}
+              onChange={this.handleQuantidade}
             />
             <TextField
               floatingLabelText="Valor"
-              // fullWidth={true}
-              // value={this.state.nome}
-              // onChange={this.handleChange}
+              fullWidth={true}
+              value={this.state.valorUnitario}
+              onChange={this.handleValorUnitario}
             />
             {PessoasItemComponent}
           </CardText>

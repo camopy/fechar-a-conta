@@ -16,12 +16,21 @@ class PessoaStore extends EventEmitter {
     localStorage.setItem("pessoas", JSON.stringify(pessoas));
   }
 
-  updatePessoa(objPessoa, checked, itemId){
+  updateValorPago(id, valorPago){
+    var pessoaEditar = this.pessoas.find(function(pessoa){
+      return pessoa.id === id
+    });
+    const index = this.pessoas.indexOf(pessoaEditar);
+    this.pessoas[index].valorPago = valorPago;
+    this.setPessoas(this.pessoas);
+    this.emit("change");
+  }
+
+  updateItemPessoa(objPessoa, checked, itemId){
     var pessoaEditar = this.pessoas.find(function(pessoa){
       return pessoa.id === objPessoa.id
     });
-      // console.log(pessoaEditar);
-    const index = this.pessoas.indexOf(pessoaEditar[0]);
+    const index = this.pessoas.indexOf(pessoaEditar);
     if(!checked){
       pessoaEditar.itens.push(itemId);
       this.pessoas[index] = pessoaEditar;
@@ -79,8 +88,12 @@ class PessoaStore extends EventEmitter {
         this.deletePessoa(action.id)
         break;
       }
-      case "UPDATE_PESSOA": {
-        this.updatePessoa(action.pessoa, action.checked, action.itemId)
+      case "UPDATE_ITEM_PESSOA": {
+        this.updateItemPessoa(action.pessoa, action.checked, action.itemId)
+        break;
+      }
+      case "UPDATE_VALOR_PAGO": {
+        this.updateValorPago(action.id, action.valorPago)
         break;
       }
       case "CLEAR_DATA": {

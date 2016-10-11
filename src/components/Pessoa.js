@@ -7,12 +7,14 @@ import ItemPessoa from './ItemPessoa';
 import * as PessoaActions from "../actions/PessoaActions";
 
 class Pessoa extends Component {
-  constructor(){
+  constructor(props){
     super();
     this.handleDelete = this.handleDelete.bind(this);
-    this.getItens = this.getItens.bind(this);    
+    this.handleValorPago = this.handleValorPago.bind(this);
+    this.getItens = this.getItens.bind(this);
     this.state = {
       allItens: ItemStore.getAll(),
+      valorPago: props.valorPago
     }
   }
 
@@ -25,6 +27,13 @@ class Pessoa extends Component {
   handleDelete(){
     PessoaActions.deletePessoa(this.props.id)
   }
+
+  handleValorPago(event) {
+    this.setState({
+      valorPago: event.target.value,
+    });
+    PessoaActions.updateValorPago(this.props.id, event.target.value || 0);
+  };
   
   render() {
     const { nome, valorPago, itens } = this.props;
@@ -56,8 +65,8 @@ class Pessoa extends Component {
             <TextField
               floatingLabelText="Valor pago"
               fullWidth={true}
-              // value={this.state.nome}
-              // onChange={this.handleChange}
+              value={this.state.valorPago}
+              onChange={this.handleValorPago}
             />
             {ItemPessoaComponents}
           </CardText>

@@ -11,7 +11,7 @@ class PessoaItem extends Component {
   }
 
   handleCheck(){
-    PessoaActions.updatePessoa(this.props.pessoa, this.props.checked, this.props.itemId)
+    PessoaActions.updateItemPessoa(this.props.pessoa, this.props.checked, this.props.itemId)
   }
   
   render() {
