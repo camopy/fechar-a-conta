@@ -4,6 +4,7 @@ import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Item from '../components/Item';
 import ItemStore from '../stores/ItemStore';
+import PessoaStore from '../stores/PessoaStore';
 import * as ItemActions from "../actions/ItemActions";
 
 class Itens extends Component {
@@ -20,10 +21,12 @@ class Itens extends Component {
 
   componentWillMount() {
     ItemStore.on("change", this.getItens);
+    PessoaStore.on("changePessoaItem", this.getItens);
   }
 
   componentWillUnmount() {
     ItemStore.removeListener("change", this.getItens);
+    PessoaStore.removeListener("changePessoaItem", this.getItens);
   }
 
   getItens() {

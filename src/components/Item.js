@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
-import {ListItem} from 'material-ui/List';
-import FontIcon from 'material-ui/FontIcon';
-import Paper from 'material-ui/Paper';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+// import {ListItem} from 'material-ui/List';
+// import FontIcon from 'material-ui/FontIcon';
+// import Paper from 'material-ui/Paper';
+import PessoaStore from '../stores/PessoaStore';
+import PessoaItem from "./PessoaItem";
 import * as ItemActions from "../actions/ItemActions";
 
 class Item extends Component {
   constructor() {
     super();
     this.handleDelete = this.handleDelete.bind(this);
+    this.getPessoas = this.getPessoas.bind(this);    
+    this.state = {
+      pessoas: PessoaStore.getAll(),
+    }
   }  
+
+  getPessoas() {
+    this.setState({
+      pessoas: PessoaStore.getAll()
+    })
+  }
 
   // createItem(nome) {
   //   ItemActions.createPessoa(nome);
@@ -19,23 +33,41 @@ class Item extends Component {
   }
 
   render() {
-    const { nome, valorUnitario, quantidade } = this.props;
+    const { id, nome, valorUnitario, quantidade } = this.props;
     const style = {
-      height: 70,
       width: '97%',
       margin: 5,
     };
 
-    var valorTotal = "Valor Total: R$" + (quantidade*valorUnitario || 0);
+    var stValorTotal = "Valor Total: R$" + (quantidade*valorUnitario || 0);
+
+    const { pessoas } = this.state;    
+    const PessoasItemComponent = pessoas.map((pessoa) => {
+      const item = pessoa.itens.find(function(item){
+        return item === id
+      })
+      return <PessoaItem 
+        key={pessoa.id} 
+        pessoa={pessoa}
+        checked={!!item}
+        itemId={id}
+      />;
+    });
 
     return (
-      <Paper style={style} zDepth={1}>
-        <ListItem
-          primaryText={nome}
-          secondaryText={valorTotal}
-          rightIcon={<FontIcon className="material-icons" onClick={this.handleDelete}>delete</FontIcon>}
-        />
-      </Paper>
+      <MuiThemeProvider>
+        <Card style={style}>
+          <CardHeader
+            title={nome}
+            subtitle={stValorTotal}
+            actAsExpander={true}
+            showExpandableButton={true}
+          />
+          <CardText expandable={true}>
+            {PessoasItemComponent}
+          </CardText>
+        </Card>
+      </MuiThemeProvider>
     );
   }
 }

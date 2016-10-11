@@ -16,13 +16,35 @@ class PessoaStore extends EventEmitter {
     localStorage.setItem("pessoas", JSON.stringify(pessoas));
   }
 
+  updatePessoa(objPessoa, checked, itemId){
+    var pessoaEditar = this.pessoas.find(function(pessoa){
+      return pessoa.id === objPessoa.id
+    });
+      // console.log(pessoaEditar);
+    const index = this.pessoas.indexOf(pessoaEditar[0]);
+    if(!checked){
+      pessoaEditar.itens.push(itemId);
+      this.pessoas[index] = pessoaEditar;
+      this.setPessoas(this.pessoas); 
+    }
+    else{
+      pessoaEditar.itens = pessoaEditar.itens.filter(function(item){
+        return item !== itemId
+      })
+      this.pessoas[index] = pessoaEditar;
+      this.setPessoas(this.pessoas);
+    }
+    this.emit("changePessoaItem");
+  }
+
   createPessoa(nome) {
     const id = Date.now();
 
     this.pessoas.push({
       id,
       nome,
-      valorPago: 0
+      valorPago: 0,
+      itens: []
     });
 
     this.setPessoas(this.pessoas);
@@ -55,6 +77,10 @@ class PessoaStore extends EventEmitter {
       }
       case "DELETE_PESSOA": {
         this.deletePessoa(action.id)
+        break;
+      }
+      case "UPDATE_PESSOA": {
+        this.updatePessoa(action.pessoa, action.checked, action.itemId)
         break;
       }
       case "CLEAR_DATA": {
