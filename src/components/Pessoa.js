@@ -36,7 +36,7 @@ class Pessoa extends Component {
   };
 
   calcularValorTotal(){
-    console.log(this);
+    // console.log(this);
     return 14;
   }
   
