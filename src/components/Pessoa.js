@@ -34,6 +34,11 @@ class Pessoa extends Component {
     });
     PessoaActions.updateValorPago(this.props.id, event.target.value || 0);
   };
+
+  calcularValorTotal(){
+    console.log(this);
+    return 14;
+  }
   
   render() {
     const { nome, valorPago, itens } = this.props;
@@ -42,7 +47,7 @@ class Pessoa extends Component {
       margin: 5,
     };
 
-    var valorTotal = 14
+    var valorTotal = this.calcularValorTotal();
     var valorPagar = valorTotal - valorPago
 
     const { allItens } = this.state;
