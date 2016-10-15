@@ -8,7 +8,8 @@
   "dependencies": {
     "flux": "^3.0.0",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "vanilla-masker": "^1.0.9"
   },
   "scripts": {
     "start": "react-scripts start",

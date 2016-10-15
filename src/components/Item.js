@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import VMasker from 'vanilla-masker';
 import PessoaStore from '../stores/PessoaStore';
 import PessoaItem from "./PessoaItem";
 import * as ItemActions from "../actions/ItemActions";
 
 class Item extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleQuantidade = this.handleQuantidade.bind(this);
     this.handleValorUnitario = this.handleValorUnitario.bind(this);    
@@ -32,9 +33,9 @@ class Item extends Component {
 
   handleValorUnitario(event) {
     this.setState({
-      valorUnitario: event.target.value,
-    });
-    ItemActions.updateValorUnitario(this.props.id, event.target.value || 0);
+      valorUnitario: VMasker.toMoney(event.target.value, {unit: 'R$'}),
+    });    
+    ItemActions.updateValorUnitario(this.props.id, VMasker.toMoney(event.target.value).replace(",", ".") || 0);
   };
 
   render() {
@@ -44,7 +45,7 @@ class Item extends Component {
       margin: 5,
     };
 
-    var stValorTotal = "Total: R$" + (quantidade*valorUnitario || 0);
+    var stValorTotal = "Total: " + VMasker.toMoney(((quantidade*valorUnitario).toFixed(2) || 0), {unit: 'R$'});
 
     const { allPessoas } = this.state;    
     const PessoasItemComponent = allPessoas.map((pessoa) => {
@@ -75,7 +76,7 @@ class Item extends Component {
             <TextField
               floatingLabelText="Valor"
               fullWidth={true}
-              value={this.state.valorUnitario}
+              value={VMasker.toMoney(this.state.valorUnitario, {unit: 'R$'})}
               onChange={this.handleValorUnitario}
             />
             {PessoasItemComponent}

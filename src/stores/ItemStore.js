@@ -63,7 +63,7 @@ class ItemStore extends EventEmitter {
       id, 
       nome,
       valorUnitario: 0,
-      quantidade: 0,
+      quantidade: 1,
       pessoas: []
     })
 

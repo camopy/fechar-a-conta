@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import VMasker from 'vanilla-masker';
 import ItemStore from '../stores/ItemStore';
 import ItemPessoa from './ItemPessoa';
 import * as PessoaActions from "../actions/PessoaActions";
 
 class Pessoa extends Component {
   constructor(props){
-    super();
+    super(props);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleValorPago = this.handleValorPago.bind(this);
     this.state = {
@@ -23,9 +24,9 @@ class Pessoa extends Component {
 
   handleValorPago(event) {
     this.setState({
-      valorPago: event.target.value,
+      valorPago: VMasker.toMoney(event.target.value, {unit: 'R$'}),
     });
-    PessoaActions.updateValorPago(this.props.id, event.target.value || 0);
+    PessoaActions.updateValorPago(this.props.id, VMasker.toMoney(event.target.value).replace(",", ".") || 0);
   };
 
   calcularValorTotal(id, allItens){
@@ -36,7 +37,7 @@ class Pessoa extends Component {
     });
 
     itensPessoa.forEach(function(item){
-      valorTotal += (item.quantidade*item.valorUnitario)/item.pessoas.length;
+      valorTotal += (item.quantidade*parseFloat(item.valorUnitario))/item.pessoas.length;
     });
     return valorTotal;
   }
@@ -53,17 +54,15 @@ class Pessoa extends Component {
         return <ItemPessoa key={item.id} {...item}/>;
       return false;
     });
-
-    var valorTotal = this.calcularValorTotal(id, allItens);
-    var valorPagar = valorTotal - valorPago
-
+    var valorTotal = this.calcularValorTotal(id, allItens).toFixed(2);
+    var valorPagar = (valorTotal - parseFloat(valorPago)).toFixed(2);
 
     return (
       <MuiThemeProvider>
         <Card style={style}>
           <CardHeader
             title={nome}
-            subtitle={"Total: R$" + valorTotal + " - Restante: R$" + valorPagar}
+            subtitle={"Total: " + VMasker.toMoney(valorTotal, {unit: 'R$'}) + " - Restante: " + VMasker.toMoney(valorPagar, {unit: 'R$'})}
             actAsExpander={true}
             showExpandableButton={true}
           />
@@ -71,7 +70,8 @@ class Pessoa extends Component {
             <TextField
               floatingLabelText="Valor pago"
               fullWidth={true}
-              value={this.state.valorPago}
+              // type="number"
+              value={VMasker.toMoney(this.state.valorPago, {unit: 'R$'})}
               onChange={this.handleValorPago}
             />
             {ItemPessoaComponents}
