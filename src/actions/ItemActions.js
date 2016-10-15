@@ -38,3 +38,18 @@ export function updateValorUnitario(id, valorUnitario) {
     valorUnitario
   });
 }
+
+export function removePessoaFromAllItens(pessoaId) {
+  dispatcher.dispatch({
+    type: "REMOVE_PESSOA_FROM_ALL_ITENS",
+    pessoaId
+  });
+}
+
+export function removePessoaFromItem(itemId, pessoaId) {
+  dispatcher.dispatch({
+    type: "REMOVE_PESSOA_FROM_ITEM",
+    itemId,
+    pessoaId
+  });
+}
