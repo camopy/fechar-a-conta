@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import VMasker from 'vanilla-masker';
 import PessoaStore from '../stores/PessoaStore';
@@ -40,10 +41,21 @@ class Item extends Component {
 
   render() {
     const { id, nome, valorUnitario, quantidade, pessoas } = this.props;
-    const style = {
+    const cardStyle = {
       width: '97%',
       margin: 5,
     };
+
+    const vrUnitStyle = {
+      // margin: 0,
+      width: '49%'
+    }
+
+    const quantidadeStyle = {
+      // margin: 0,
+      marginRight: '2%',
+      width: '49%'
+    }
 
     var stValorTotal = "Total: " + VMasker.toMoney(((quantidade*valorUnitario).toFixed(2) || 0), {unit: 'R$'});
 
@@ -59,27 +71,31 @@ class Item extends Component {
 
     return (
       <MuiThemeProvider>
-        <Card style={style}>
+        <Card style={cardStyle}>
           <CardHeader
             title={nome}
             subtitle={stValorTotal}
             actAsExpander={true}
             showExpandableButton={true}
           />
-          <CardText expandable={true}>
-            <TextField
+          <CardText expandable={true}>          
+            <TextField style={quantidadeStyle}
               floatingLabelText="Quantidade"
-              fullWidth={true}
+              // fullWidth={true}
               value={this.state.quantidade}
               onChange={this.handleQuantidade}
             />
-            <TextField
+            <TextField style={vrUnitStyle}
               floatingLabelText="Valor"
-              fullWidth={true}
+              // fullWidth={true}
               value={VMasker.toMoney(this.state.valorUnitario, {unit: 'R$'})}
               onChange={this.handleValorUnitario}
             />
+            <p>Dividir com:</p>
             {PessoasItemComponent}
+            <CardActions>            
+              <RaisedButton label="Excluir Item" primary={true} fullWidth={true} onClick={this.handleDelete}/>
+            </CardActions>
           </CardText>
         </Card>
       </MuiThemeProvider>

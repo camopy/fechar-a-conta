@@ -19,10 +19,12 @@ class Pessoas extends Component {
 
   componentWillMount() {
     PessoaStore.on("change", this.getPessoas);
+    PessoaStore.on("changeItensPessoa", this.getPessoas);
   }
 
   componentWillUnmount() {
     PessoaStore.removeListener("change", this.getPessoas);
+    PessoaStore.removeListener("changeItensPessoa", this.getPessoas);
   }
 
   getPessoas() {

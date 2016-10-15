@@ -43,7 +43,7 @@ class PessoaStore extends EventEmitter {
       this.pessoas[index] = pessoaEditar;
       this.setPessoas(this.pessoas);
     }
-    this.emit("changePessoaItem");
+    this.emit("changeItensPessoa");
   }
 
   createPessoa(nome) {

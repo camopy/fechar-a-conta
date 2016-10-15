@@ -1,25 +1,46 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import VMasker from 'vanilla-masker';
 import ItemStore from '../stores/ItemStore';
 import ItemPessoa from './ItemPessoa';
 import * as PessoaActions from "../actions/PessoaActions";
+import * as ItemActions from "../actions/ItemActions";
 
 class Pessoa extends Component {
   constructor(props){
     super(props);
+    this.getItensPessoa = this.getItensPessoa.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleValorPago = this.handleValorPago.bind(this);
     this.state = {
       allItens: ItemStore.getAll(),
-      valorPago: props.valorPago
+      valorPago: props.valorPago,
+      itensPessoa: ItemStore.getItensPessoa(props.id)
     }
+  }
+
+  componentWillMount() {
+    // ItemStore.on("change", this.getItensPessoa);
+    ItemStore.on("changeItensPessoa", this.getItensPessoa);
+  }
+
+  componentWillUnmount() {
+    // ItemStore.removeListener("change", this.getItensPessoa);
+    ItemStore.removeListener("changeItensPessoa", this.getItensPessoa);
+  }
+
+  getItensPessoa(pessoaId) {
+    this.setState({
+      itensPessoa: ItemStore.getItensPessoa(pessoaId)
+    })
   }
 
   handleDelete(){
     PessoaActions.deletePessoa(this.props.id)
+    ItemActions.removePessoaFromAllItens(this.props.id)
   }
 
   handleValorPago(event) {
@@ -29,12 +50,12 @@ class Pessoa extends Component {
     PessoaActions.updateValorPago(this.props.id, VMasker.toMoney(event.target.value).replace(",", ".") || 0);
   };
 
-  calcularValorTotal(id, allItens){
+  calcularValorTotal(id, allItens, itensPessoa){
     var valorTotal = 0;
 
-    const itensPessoa = allItens.filter(function(item){
-      return item.pessoas.indexOf(id) >= 0;
-    });
+    // const itensPessoa = allItens.filter(function(item){
+    //   return item.pessoas.indexOf(id) >= 0;
+    // });
 
     itensPessoa.forEach(function(item){
       valorTotal += (item.quantidade*parseFloat(item.valorUnitario))/item.pessoas.length;
@@ -48,13 +69,20 @@ class Pessoa extends Component {
       width: '97%',
       margin: 5,
     };
-    const { allItens } = this.state;
+    const { allItens, itensPessoa } = this.state;
     const ItemPessoaComponents = allItens.map((item) => {
       if(item.pessoas.indexOf(id)>=0)
-        return <ItemPessoa key={item.id} {...item}/>;
+        return <ItemPessoa
+         key={item.id}
+         id={item.id}
+         nome={item.nome}
+         valorUnitario={item.valorUnitario}
+         quantidade={item.quantidade}
+         pessoaId={id}
+      />;
       return false;
     });
-    var valorTotal = this.calcularValorTotal(id, allItens).toFixed(2);
+    var valorTotal = this.calcularValorTotal(id, allItens, itensPessoa).toFixed(2);
     var valorPagar = (valorTotal - parseFloat(valorPago)).toFixed(2);
 
     return (
@@ -74,7 +102,11 @@ class Pessoa extends Component {
               value={VMasker.toMoney(this.state.valorPago, {unit: 'R$'})}
               onChange={this.handleValorPago}
             />
+            <p>Consumo:</p>
             {ItemPessoaComponents}
+            <CardActions>            
+              <RaisedButton label="Excluir Pessoa" primary={true} fullWidth={true} onClick={this.handleDelete}/>
+            </CardActions>
           </CardText>
         </Card>
       </MuiThemeProvider>      

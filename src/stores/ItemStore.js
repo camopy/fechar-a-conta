@@ -79,8 +79,38 @@ class ItemStore extends EventEmitter {
     this.emit("change");
   }
 
+  removePessoaFromAllItens(pessoaId) {
+    this.itens.forEach(function(item) {
+      item.pessoas = item.pessoas.filter(function(pessoa){
+        return pessoa !== pessoaId;
+      });
+    });
+
+    this.setItens(this.itens);
+    this.emit("change");
+  }
+
+  removePessoaFromItem(itemId, pessoaId) {
+    this.itens.forEach(function(item) {
+      if(item.id === itemId){
+        item.pessoas = item.pessoas.filter(function(pessoa){
+          return pessoa !== pessoaId;
+        });
+      }
+    });
+
+    this.setItens(this.itens);
+    this.emit("changeItensPessoa");
+  }
+
   getAll() {
     return this.itens;
+  }
+
+  getItensPessoa(pessoaId) {
+    return this.itens.filter(function(item){
+      return item.pessoas.indexOf(pessoaId) >= 0;
+    });
   }
 
   clearAllData() {
@@ -109,6 +139,14 @@ class ItemStore extends EventEmitter {
       }
       case "UPDATE_VALOR_UNITARIO": {
         this.updateValorUnitario(action.id, action.valorUnitario)
+        break;
+      }
+      case "REMOVE_PESSOA_FROM_ALL_ITENS": {
+        this.removePessoaFromAllItens(action.pessoaId)
+        break;
+      }
+      case "REMOVE_PESSOA_FROM_ITEM": {
+        this.removePessoaFromItem(action.itemId, action.pessoaId)
         break;
       }
       case "CLEAR_DATA": {

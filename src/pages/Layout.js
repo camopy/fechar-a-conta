@@ -7,7 +7,7 @@ import * as HeaderActions from "../actions/HeaderActions";
 class Layout extends Component {
   constructor() {
     super()
-    this.versao = "1.0.0";
+    this.versao = "1.1.0";
   }
 
   getVersao(){
