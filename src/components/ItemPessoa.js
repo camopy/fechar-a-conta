@@ -23,7 +23,7 @@ class ItemPessoa extends Component {
       margin: 5,
     };
 
-    var valorTotal = "Valor Total: " + VMasker.toMoney(((quantidade*valorUnitario).toFixed(2) || 0), {unit: 'R$'});
+    var valorTotal = "Total: " + VMasker.toMoney(((quantidade*valorUnitario).toFixed(2) || 0), {unit: 'R$'});
 
     return (
       <Paper style={style} zDepth={1}>
