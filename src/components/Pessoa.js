@@ -75,6 +75,7 @@ class Pessoa extends Component {
          valorUnitario={item.valorUnitario}
          quantidade={item.quantidade}
          pessoaId={id}
+         quantidadePessoas={item.pessoas.length}
       />;
       return false;
     });

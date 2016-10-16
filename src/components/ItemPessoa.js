@@ -16,14 +16,14 @@ class ItemPessoa extends Component {
   }
 
   render() {
-    const { nome, valorUnitario, quantidade } = this.props;
+    const { nome, valorUnitario, quantidade, quantidadePessoas } = this.props;
     const style = {
       height: 70,
       width: '97%',
       margin: 5,
     };
 
-    var valorTotal = "Total: " + VMasker.toMoney(((quantidade*valorUnitario).toFixed(2) || 0), {unit: 'R$'});
+    var valorTotal = "Total: " + VMasker.toMoney((((quantidade*valorUnitario)/quantidadePessoas).toFixed(2) || 0), {unit: 'R$'});
 
     return (
       <Paper style={style} zDepth={1}>

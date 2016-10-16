@@ -137,6 +137,8 @@ class ItemStore extends EventEmitter {
     this.itens = [];
     this.setItens(this.itens);
     this.emit("change");
+    this.setValorTotalMesa(0);
+    this.emit("updateValorTotalMesa");
   }
 
   handleActions(action){
