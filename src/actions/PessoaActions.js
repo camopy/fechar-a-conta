@@ -14,15 +14,6 @@ export function deletePessoa(id) {
   });
 }
 
-export function updateItemPessoa(pessoa, checked, itemId) {
-  dispatcher.dispatch({
-    type: "UPDATE_ITEM_PESSOA",
-    pessoa,
-    checked,
-    itemId
-  });
-}
-
 export function updateValorPago(id, valorPago) {
   dispatcher.dispatch({
     type: "UPDATE_VALOR_PAGO",

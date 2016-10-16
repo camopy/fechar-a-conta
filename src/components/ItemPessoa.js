@@ -12,7 +12,7 @@ class ItemPessoa extends Component {
   }  
 
   handleDelete(){
-    ItemActions.removePessoaFromItem(this.props.id, this.props.pessoaId)
+    ItemActions.updatePessoaItem(this.props.pessoa, true, this.props.id)
   }
 
   render() {

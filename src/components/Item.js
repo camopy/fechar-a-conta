@@ -60,6 +60,7 @@ class Item extends Component {
     var stValorTotal = "Total: " + VMasker.toMoney(((quantidade*valorUnitario).toFixed(2) || 0), {unit: 'R$'});
 
     const { allPessoas } = this.state;    
+    const dividir = allPessoas.length ? <p>Dividir com:</p> : '';
     const PessoasItemComponent = allPessoas.map((pessoa) => {
         return <PessoaItem
           key={pessoa.id} 
@@ -91,7 +92,7 @@ class Item extends Component {
               value={VMasker.toMoney(this.state.valorUnitario, {unit: 'R$'})}
               onChange={this.handleValorUnitario}
             />
-            <p>Dividir com:</p>
+            {dividir}
             {PessoasItemComponent}
             <CardActions>            
               <RaisedButton label="Excluir Item" primary={true} fullWidth={true} onClick={this.handleDelete}/>

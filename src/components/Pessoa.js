@@ -27,19 +27,19 @@ class Pessoa extends Component {
 
   componentWillMount() {
     // ItemStore.on("change", this.getItensPessoa);
-    ItemStore.on("changeItensPessoa", this.getItensPessoa);
+    ItemStore.on("changePessoasItem", this.getItensPessoa);
     PessoaStore.on("changeToggleDezPorCento", this.getToggleDezPorCento);
   }
 
   componentWillUnmount() {
     // ItemStore.removeListener("change", this.getItensPessoa);
-    ItemStore.removeListener("changeItensPessoa", this.getItensPessoa);
+    ItemStore.removeListener("changePessoasItem", this.getItensPessoa);
     PessoaStore.removeListener("changeToggleDezPorCento", this.getToggleDezPorCento);
   }
 
-  getItensPessoa(pessoaId) {
+  getItensPessoa() {
     this.setState({
-      itensPessoa: ItemStore.getItensPessoa(pessoaId)
+      itensPessoa: ItemStore.getItensPessoa(this.props.id)
     })
   }
 
@@ -78,15 +78,16 @@ class Pessoa extends Component {
       margin: 5,
     };
     const { allItens, itensPessoa, toggleDezPorCento } = this.state;
+    const consumo = itensPessoa.length ? <p>Consumo:</p> : '';
     const ItemPessoaComponents = allItens.map((item) => {
-      if(item.pessoas.indexOf(id)>=0)
+      if(item.pessoas.indexOf(id) >= 0)
         return <ItemPessoa
          key={item.id}
          id={item.id}
          nome={item.nome}
          valorUnitario={item.valorUnitario}
          quantidade={item.quantidade}
-         pessoaId={id}
+         pessoa={this.props}
          quantidadePessoas={item.pessoas.length}
       />;
       return false;
@@ -112,7 +113,7 @@ class Pessoa extends Component {
                 value={VMasker.toMoney(this.state.valorPago, {unit: 'R$'})}
                 onChange={this.handleValorPago}
               />
-              <p>Consumo:</p>
+              {consumo}
               {ItemPessoaComponents}
               <CardActions>            
                 <RaisedButton label="Excluir Pessoa" primary={true} fullWidth={true} onClick={this.handleDelete}/>

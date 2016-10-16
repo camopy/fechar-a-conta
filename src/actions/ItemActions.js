@@ -45,11 +45,3 @@ export function removePessoaFromAllItens(pessoaId) {
     pessoaId
   });
 }
-
-export function removePessoaFromItem(itemId, pessoaId) {
-  dispatcher.dispatch({
-    type: "REMOVE_PESSOA_FROM_ITEM",
-    itemId,
-    pessoaId
-  });
-}

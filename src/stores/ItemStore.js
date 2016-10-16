@@ -93,19 +93,6 @@ class ItemStore extends EventEmitter {
     this.emit("change");
   }
 
-  removePessoaFromItem(itemId, pessoaId) {
-    this.itens.forEach(function(item) {
-      if(item.id === itemId){
-        item.pessoas = item.pessoas.filter(function(pessoa){
-          return pessoa !== pessoaId;
-        });
-      }
-    });
-
-    this.setItens(this.itens);
-    this.emit("changeItensPessoa");
-  }
-
   updateValorTotalMesa() {
     var valorTotalMesa = 0;
     this.itens.forEach(function(item) {
@@ -165,10 +152,6 @@ class ItemStore extends EventEmitter {
       }
       case "REMOVE_PESSOA_FROM_ALL_ITENS": {
         this.removePessoaFromAllItens(action.pessoaId)
-        break;
-      }
-      case "REMOVE_PESSOA_FROM_ITEM": {
-        this.removePessoaFromItem(action.itemId, action.pessoaId)
         break;
       }
       case "CLEAR_DATA": {

@@ -26,26 +26,6 @@ class PessoaStore extends EventEmitter {
     this.emit("change");
   }
 
-  updateItemPessoa(objPessoa, checked, itemId){
-    var pessoaEditar = this.pessoas.find(function(pessoa){
-      return pessoa.id === objPessoa.id
-    });
-    const index = this.pessoas.indexOf(pessoaEditar);
-    if(!checked){
-      pessoaEditar.itens.push(itemId);
-      this.pessoas[index] = pessoaEditar;
-      this.setPessoas(this.pessoas); 
-    }
-    else{
-      pessoaEditar.itens = pessoaEditar.itens.filter(function(item){
-        return item !== itemId
-      })
-      this.pessoas[index] = pessoaEditar;
-      this.setPessoas(this.pessoas);
-    }
-    this.emit("changeItensPessoa");
-  }
-
   createPessoa(nome) {
     const id = Date.now();
 
@@ -96,10 +76,6 @@ class PessoaStore extends EventEmitter {
       }
       case "DELETE_PESSOA": {
         this.deletePessoa(action.id)
-        break;
-      }
-      case "UPDATE_ITEM_PESSOA": {
-        this.updateItemPessoa(action.pessoa, action.checked, action.itemId)
         break;
       }
       case "UPDATE_VALOR_PAGO": {
