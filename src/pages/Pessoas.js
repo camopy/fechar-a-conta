@@ -72,7 +72,8 @@ class Pessoas extends Component {
       // height: '500px' 
       // minHeight: '100%'
     }
-    const widgetStyle = {
+    const componentStyle = {
+      // margin: 0,
       // overflow: 'auto',
       // height: '500px',
       // position: 'relative'
@@ -81,7 +82,7 @@ class Pessoas extends Component {
     }
 
     return (
-      <div style={widgetStyle}>
+      <div style={componentStyle}>
         <div style={formStyle}>
           <form onSubmit={this.handleSubmit}>
             <MuiThemeProvider>

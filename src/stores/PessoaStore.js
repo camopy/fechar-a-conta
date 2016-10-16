@@ -71,10 +71,21 @@ class PessoaStore extends EventEmitter {
     return this.pessoas;
   }
 
+  getToggleDezPorCento() {
+    return localStorage.getItem("toggleDezPorCento") != null ? JSON.parse(localStorage.getItem("toggleDezPorCento")) : [];
+  }
+
+  setToggleDezPorCento(toggle) {
+    localStorage.setItem("toggleDezPorCento", JSON.stringify(toggle));
+    this.emit("changeToggleDezPorCento");
+    this.emit("change");
+  }
+
   clearAllData() {
     this.pessoas = [];
     this.setPessoas(this.pessoas);
     this.emit("change");
+    this.setToggleDezPorCento(true);
   }
 
   handleActions(action){
@@ -93,6 +104,10 @@ class PessoaStore extends EventEmitter {
       }
       case "UPDATE_VALOR_PAGO": {
         this.updateValorPago(action.id, action.valorPago)
+        break;
+      }
+      case "TOGGLE_DEZ_POR_CENTO": {
+        this.setToggleDezPorCento(action.toggled)
         break;
       }
       case "CLEAR_DATA": {

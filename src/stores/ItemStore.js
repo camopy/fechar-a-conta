@@ -22,6 +22,7 @@ class ItemStore extends EventEmitter {
     });
     const index = this.itens.indexOf(itemEditar);
     this.itens[index].quantidade = quantidade;
+    this.updateValorTotalMesa();
     this.setItens(this.itens);
     this.emit("change");
   }
@@ -32,6 +33,7 @@ class ItemStore extends EventEmitter {
     });
     const index = this.itens.indexOf(itemEditar);
     this.itens[index].valorUnitario = valorUnitario;
+    this.updateValorTotalMesa();
     this.setItens(this.itens);
     this.emit("change");
   }
@@ -75,6 +77,7 @@ class ItemStore extends EventEmitter {
     this.itens = this.itens.filter(function(item) {
         return item.id !== id;
     });
+    this.updateValorTotalMesa();
     this.setItens(this.itens);
     this.emit("change");
   }
@@ -103,6 +106,23 @@ class ItemStore extends EventEmitter {
     this.emit("changeItensPessoa");
   }
 
+  updateValorTotalMesa() {
+    var valorTotalMesa = 0;
+    this.itens.forEach(function(item) {
+      valorTotalMesa += item.quantidade * item.valorUnitario;
+    });
+    this.setValorTotalMesa(valorTotalMesa);
+    this.emit("updateValorTotalMesa");
+  }
+
+  getValorTotalMesa() {
+    return localStorage.getItem("valorTotalMesa") != null ? JSON.parse(localStorage.getItem("valorTotalMesa")) : [];
+  }
+
+  setValorTotalMesa(valorTotal) {
+    localStorage.setItem("valorTotalMesa", JSON.stringify(valorTotal));
+  }
+
   getAll() {
     return this.itens;
   }
@@ -117,6 +137,8 @@ class ItemStore extends EventEmitter {
     this.itens = [];
     this.setItens(this.itens);
     this.emit("change");
+    this.setValorTotalMesa(0);
+    this.emit("updateValorTotalMesa");
   }
 
   handleActions(action){
