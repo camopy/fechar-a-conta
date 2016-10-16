@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Item from '../components/Item';
 import ItemStore from '../stores/ItemStore';
@@ -83,11 +82,7 @@ class Itens extends Component {
           </form>
         </div>
         <div>
-          <MuiThemeProvider>    
-            <List>            
-              {ItemComponents}
-            </List>          
-          </MuiThemeProvider>
+          {ItemComponents}
         </div>
       </div>
     );

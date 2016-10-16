@@ -53,10 +53,6 @@ class Pessoa extends Component {
   calcularValorTotal(id, allItens, itensPessoa){
     var valorTotal = 0;
 
-    // const itensPessoa = allItens.filter(function(item){
-    //   return item.pessoas.indexOf(id) >= 0;
-    // });
-
     itensPessoa.forEach(function(item){
       valorTotal += (item.quantidade*parseFloat(item.valorUnitario))/item.pessoas.length;
     });
@@ -86,30 +82,32 @@ class Pessoa extends Component {
     var valorPagar = (valorTotal - parseFloat(valorPago)).toFixed(2);
 
     return (
-      <MuiThemeProvider>
-        <Card style={style}>
-          <CardHeader
-            title={nome}
-            subtitle={"Total: " + VMasker.toMoney(valorTotal, {unit: 'R$'}) + " - Restante: " + VMasker.toMoney(valorPagar, {unit: 'R$'})}
-            actAsExpander={true}
-            showExpandableButton={true}
-          />
-          <CardText expandable={true}>
-            <TextField
-              floatingLabelText="Valor pago"
-              fullWidth={true}
-              // type="number"
-              value={VMasker.toMoney(this.state.valorPago, {unit: 'R$'})}
-              onChange={this.handleValorPago}
+      <div>
+        <MuiThemeProvider>
+          <Card style={style}>
+            <CardHeader
+              title={nome}
+              subtitle={"Total: " + VMasker.toMoney(valorTotal, {unit: 'R$'}) + " - Restante: " + VMasker.toMoney(valorPagar, {unit: 'R$'})}
+              actAsExpander={true}
+              showExpandableButton={true}
             />
-            <p>Consumo:</p>
-            {ItemPessoaComponents}
-            <CardActions>            
-              <RaisedButton label="Excluir Pessoa" primary={true} fullWidth={true} onClick={this.handleDelete}/>
-            </CardActions>
-          </CardText>
-        </Card>
-      </MuiThemeProvider>      
+            <CardText expandable={true}>
+              <TextField
+                floatingLabelText="Valor pago"
+                fullWidth={true}
+                // type="number"
+                value={VMasker.toMoney(this.state.valorPago, {unit: 'R$'})}
+                onChange={this.handleValorPago}
+              />
+              <p>Consumo:</p>
+              {ItemPessoaComponents}
+              <CardActions>            
+                <RaisedButton label="Excluir Pessoa" primary={true} fullWidth={true} onClick={this.handleDelete}/>
+              </CardActions>
+            </CardText>
+          </Card>
+        </MuiThemeProvider>        
+      </div>
     );
   }
 }
