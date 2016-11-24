@@ -9,6 +9,7 @@
     "flux": "^3.0.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-tap-event-plugin": "^2.0.1",
     "vanilla-masker": "^1.0.9"
   },
   "scripts": {

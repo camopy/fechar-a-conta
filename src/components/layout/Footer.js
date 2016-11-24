@@ -64,18 +64,22 @@ class Footer extends Component {
     const { valorTotalMesa, toggleDezPorCento } = this.state;    
 
     const valorTotalMesaStyle = {
-      height: 40,
+      height: 20,
       width: '97%',
       margin: 5,
       display: 'inline-block',
     }
     const vrTotalStyle = {
       // marginRight: '2%',
-      width: '40%'
+      width: '50%',
+      display: 'inline-block',
+      float: 'left'
     }
     const toggleStyle = {
-      width: '40%',
+      width: '50%',
       textAlign: 'right',
+      display: 'inline-block',
+      float: 'rigth'
     }
 
     return (

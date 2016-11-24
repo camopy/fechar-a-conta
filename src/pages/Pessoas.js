@@ -64,21 +64,24 @@ class Pessoas extends Component {
     };
     const formStyle = {
       // margin: 5,
-      // position: 'relative'
+      // position: 'fixed',
+      // display: 'inline'
     }
     const pessoasStyle = {
       // overflow: 'auto',
       // overflow: 'hidden',
       // height: '500px' 
       // minHeight: '100%'
+      // display: 'inline'
     }
     const componentStyle = {
       // margin: 0,
-      // overflow: 'auto',
+      overflow: 'auto',
       // height: '500px',
-      // position: 'relative'
+      // position: 'relative',
       // minHeight: '100%',
       // paddingBottom: '180px',
+      dysplay: 'inline-block'
     }
 
     return (
